@@ -4,11 +4,11 @@ namespace class;
 
 class User
 {
-    public string $id;
-    public string $name;
-    public string $email;
-    public string $role;
-    public const DEFAULT_ROLE = 'student';
+    protected string $id;
+    protected string $name;
+    protected string $email;
+    protected string $role;
+    private const DEFAULT_ROLE = 'student';
 
     public function __construct(string $name, string $email, string $role = self::DEFAULT_ROLE)
     {
@@ -16,7 +16,6 @@ class User
         $this->name = $name;
         $this->email = $email;
         $this->role = $role;
-        echo "User $this->name dibuat" . PHP_EOL;
     }
 
     public function introduce(): void
@@ -24,9 +23,24 @@ class User
         echo "Halo, saya $this->name, peran saya adalah $this->role" . PHP_EOL;
     }
 
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
     public function changeRole(string $role): void
     {
         $this->role = $role;
+    }
+
+    public function changeEmail(string $newEmail): void
+    {
+        $this->email = $newEmail;
     }
 
     public function __destruct()

@@ -18,7 +18,7 @@ class Course
 
     public function info(): void
     {
-        echo "Kursus : $this->title oleh {$this->instructor->name}" . PHP_EOL;
+        echo "Kursus : $this->title oleh {$this->instructor->getEmail()}" . PHP_EOL;
     }
 
     public function addLesson(Lesson $lesson): void
@@ -31,5 +31,15 @@ class Course
         foreach ($this->lessons as $lesson) {
             $lesson->show();
         }
+    }
+
+    public function getAccessLevel(): string
+    {
+        return "Access not defined";
+    }
+
+    public function isFree(): ?bool
+    {
+        return null;
     }
 }
