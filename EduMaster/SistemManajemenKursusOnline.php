@@ -26,6 +26,11 @@ require_once 'class/VideoLesson.php';
 require_once 'class/QuizLesson.php';
 require_once 'class/Admin.php';
 require_once 'class/SystemSupervisor.php';
+require_once 'class/Config.php';
+require_once 'class/LoggerFactory.php';
+require_once 'class/StudentProfile.php';
+require_once 'class/Submission.php';
+require_once 'class/Validator.php';
 
 use class\User;
 use class\Course;
@@ -39,6 +44,13 @@ use class\VideoLesson;
 use class\QuizLesson;
 use class\Admin;
 use class\SystemSupervisor;
+use class\Config;
+use class\LoggerFactory;
+use class\StudentProfile;
+use Assignment\Student as AssignmentStudent;
+use Assignment\AssignmentSubmission;
+use Assignment\ValidationException;
+//use DateTime;
 
 // Buat user instruktur
 $instructor = new User("Fajar", "fajar@example.com", "instructor");
@@ -121,5 +133,99 @@ echo $admin->generateReport();
 $supervisor = new SystemSupervisor();
 $supervisor->performAudit();
 echo $supervisor->generateReport();
+
+echo str_repeat("-", 100) . PHP_EOL;
+
+echo Config::getAppInfo() . PHP_EOL;
+Config::setVersion("2.1.5");
+echo Config::getAppInfo() . PHP_EOL;
+echo Config::systemName() . PHP_EOL;
+echo "Access Count : " . Config::$accessCount . PHP_EOL;
+
+$logger = LoggerFactory::createLogger();
+$logger->log("Sistem berjalan lancar");
+$logger->error("Terjadi kesalahan koneksi");
+
+$profile = new stdClass();
+$profile->name = "Dina";
+$profile->role = "student";
+$profile->courses = ["PHP", "Laravel"];
+
+echo "Profile User :" . PHP_EOL;
+foreach ($profile as $key => $value) {
+    echo "- $key : " . (is_array($value) ? implode(", ", $value) : $value) . PHP_EOL;
+}
+
+$reportQuiz = new stdClass();
+$reportQuiz->skor = 5;
+$reportQuiz->waktu = 10;
+$reportQuiz->feedback = "Sangat membantu";
+
+echo "Report Quiz :" . PHP_EOL;
+foreach ($reportQuiz as $key => $value) {
+    echo "- $key : " . (is_array($value) ? implode(", ", $value) : $value) . PHP_EOL;
+}
+
+echo str_repeat("-", 100) . PHP_EOL;
+
+$student = new StudentProfile([
+    'name' => 'Budi',
+    'email' => 'budi@gmail.com',
+    'courses' => ["PHP", "Laravel"]
+]);
+
+echo $student . PHP_EOL;
+echo "Email : $student->email" . PHP_EOL;
+
+$student->level = 'intermediate';
+echo "Update at : $student->updated_at" . PHP_EOL;
+
+echo "Student Profile :" . PHP_EOL;
+foreach ($student as $key => $value) {
+    echo "$key => ";
+    echo is_array($value) ? implode(", ", $value) . PHP_EOL : $value . PHP_EOL;
+}
+
+echo "Courses : " . PHP_EOL;
+foreach ($student->courseGenerator() as $course) {
+    echo "-> $course" . PHP_EOL;
+}
+
+$copy = clone $student;
+echo "Clone profile at : $copy->cloned_at" . PHP_EOL;
+
+echo "Student Profile :" . PHP_EOL;
+foreach ($copy as $key => $value) {
+    echo "$key => ";
+    echo is_array($value) ? implode(", ", $value) . PHP_EOL : $value . PHP_EOL;
+}
+
+echo "Courses : " . PHP_EOL;
+foreach ($copy->courseGenerator() as $course) {
+    echo "-> $course" . PHP_EOL;
+}
+
+echo "Comparing Object :" . PHP_EOL;
+echo $student == $copy ? "Isi sama" . PHP_EOL : "Isi beda" . PHP_EOL;
+echo $student === $copy ? "Object sama" . PHP_EOL : "Object beda" . PHP_EOL;
+
+echo "Method tidak tersedia" . PHP_EOL;
+echo $student->generateCertificate() . PHP_EOL;
+
+echo str_repeat("-", 100) . PHP_EOL;
+
+try {
+    $student = new AssignmentStudent("Dini", "dini@gmail.com");
+    $submission = new AssignmentSubmission(new DateTime("+1 day"));
+
+    $result = $submission->handle($student);
+    echo $result->message() . PHP_EOL;
+
+    $submission->debugStudent($student);
+} catch (ValidationException $ve) {
+    echo "⚠️ Validasi Gagal : " . $ve->getMessage() . PHP_EOL;
+} catch (Exception $e) {
+    echo "⚠️ Error Lain : " . $e->getMessage() . PHP_EOL;
+}
 
 echo str_repeat("-", 100) . PHP_EOL;
