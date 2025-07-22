@@ -1,11 +1,11 @@
 <?php
 
-function register(string $name, string $email, string $password) {
-    global $students;
-    $count = count($students);
+function addInstructor(string $name, string $email, string $password) {
+    global $instructors;
+    $count = count($instructors);
 
-    $students[] = [
-        "id" => "ST" . ++$count,
+    $instructors[] = [
+        "id" => "IT" . ++$count,
         "name" => $name,
         "email" => $email,
         "password" => password_hash($password, PASSWORD_DEFAULT),

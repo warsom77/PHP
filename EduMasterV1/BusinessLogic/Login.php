@@ -1,25 +1,32 @@
 <?php
 
-function login() {
+function login($email, $password) {
     global $students;
     global $instructors;
 
-    echo "Email    : ";
-    $email = trim(fgets(STDIN));
-    echo "Password : ";
-    $password = trim(fgets(STDIN));
-
-    foreach ($students as $student) {
-        if ($student["email"] == $email && $student["password"] == $password) {
-            echo "Anda login sebagai siswa." . PHP_EOL;
-            return;
+    if (!empty($students)) {
+        foreach ($students as $student) {
+            if ($student["email"] == $email && password_verify($password, $student["password"])) {
+                if ($student['status'] == 'active') {
+                    echo "Anda login sebagai siswa." . PHP_EOL;
+                    return true;
+                } else {
+                    echo "Akun anda tidak aktif." . PHP_EOL;
+                    return false;
+                }
+            }
         }
     }
 
     foreach ($instructors as $instructor) {
-        if ($instructor["email"] == $email && $instructor["password"] == $password) {
-            echo "Anda login sebagai instruktur." . PHP_EOL;
-            return;
+        if ($instructor["email"] == $email && password_verify($password, $instructor["password"])) {
+            if ($instructor['status'] == 'active') {
+                echo "Anda login sebagai instruktur." . PHP_EOL;
+                return true;
+            } else {
+                echo "Akun anda tidak aktif." . PHP_EOL;
+                return false;
+            }
         }
     }
 
