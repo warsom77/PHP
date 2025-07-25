@@ -2,7 +2,11 @@
 
 function addInstructor(string $name, string $email, string $password) {
     global $instructors;
-    $count = count($instructors);
+    if (is_null($instructors)) {
+        $count = 0;
+    } else {
+        $count = count($instructors);
+    }
 
     $instructors[] = [
         "id" => "IT" . ++$count,

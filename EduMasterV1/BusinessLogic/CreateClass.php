@@ -2,7 +2,11 @@
 
 function createClass(string $title, string $description, string $instructor) {
     global $classes;
-    $count = count($classes);
+    if (is_null($classes)) {
+        $count = 0;
+    } else {
+        $count = count($classes);
+    }
 
     $classes[] = [
         'id' => "CL" . ++$count,

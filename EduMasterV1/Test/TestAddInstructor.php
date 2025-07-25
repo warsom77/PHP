@@ -1,8 +1,8 @@
 <?php
 
-require_once '../Model/Instructor.php';
-require_once '../BusinessLogic/AddInstructor.php';
-require_once '../BusinessLogic/Login.php';
+require_once __DIR__ . '/../Model/Instructor.php';
+require_once __DIR__ . '/../BusinessLogic/AddInstructor.php';
+require_once __DIR__ . '/../BusinessLogic/Login.php';
 
 addInstructor('Budi','budi@edu.com', 'budi123');
 var_dump($instructors);

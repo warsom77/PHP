@@ -1,11 +1,11 @@
 <?php
 
-require_once '../Model/Student.php';
-require_once '../Model/Class.php';
-require_once '../BusinessLogic/Register.php';
-require_once '../BusinessLogic/CreateClass.php';
-require_once '../BusinessLogic/AddClassStudent.php';
-require_once '../BusinessLogic/ShowClassStudent.php';
+require_once __DIR__ . '/../Model/Student.php';
+require_once __DIR__ . '/../Model/Class.php';
+require_once __DIR__ . '/../BusinessLogic/Register.php';
+require_once __DIR__ . '/../BusinessLogic/CreateClass.php';
+require_once __DIR__ . '/../BusinessLogic/AddClassStudent.php';
+require_once __DIR__ . '/../BusinessLogic/ShowClassStudent.php';
 
 register('Ali', 'ali@gmail.com', 'ali123');
 register('Budi', 'budi@gmail.com', 'budi123');

@@ -1,6 +1,6 @@
 <?php
 
-require_once '../Helper/GetTitleClass.php';
+require_once __DIR__ . '/../Helper/GetTitleClass.php';
 
 function showClassStudent(string $email) {
     global $students;

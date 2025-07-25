@@ -14,11 +14,15 @@ function nonActiveAccount(string $email) {
         }
     }
 
-    foreach ($instructors as &$instructor) {
-        if ($instructor["email"] == $email) {
-            $instructor['status'] = 'nonactive';
-            echo 'Akun telah dinonaktifkan.' . PHP_EOL;
-            return;
+    if (!empty($instructors)) {
+        foreach ($instructors as &$instructor) {
+            if ($instructor["email"] == $email) {
+                $instructor['status'] = 'nonactive';
+                echo 'Akun telah dinonaktifkan.' . PHP_EOL;
+                return;
+            }
         }
     }
+
+    echo 'Akun tidak ditemukan' . PHP_EOL;
 }

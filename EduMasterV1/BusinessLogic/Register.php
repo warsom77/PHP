@@ -2,7 +2,11 @@
 
 function register(string $name, string $email, string $password) {
     global $students;
-    $count = count($students);
+    if (is_null($students)) {
+        $count = 0;
+    } else {
+        $count = count($students);
+    }
 
     $students[] = [
         "id" => "ST" . ++$count,

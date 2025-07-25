@@ -4,12 +4,16 @@ function login($email, $password) {
     global $students;
     global $instructors;
 
+    if ($email == 'admin' && $password == 'admin') {
+        return 'admin';
+    }
+
     if (!empty($students)) {
         foreach ($students as $student) {
             if ($student["email"] == $email && password_verify($password, $student["password"])) {
                 if ($student['status'] == 'active') {
                     echo "Anda login sebagai siswa." . PHP_EOL;
-                    return true;
+                    return $student;
                 } else {
                     echo "Akun anda tidak aktif." . PHP_EOL;
                     return false;
@@ -18,14 +22,16 @@ function login($email, $password) {
         }
     }
 
-    foreach ($instructors as $instructor) {
-        if ($instructor["email"] == $email && password_verify($password, $instructor["password"])) {
-            if ($instructor['status'] == 'active') {
-                echo "Anda login sebagai instruktur." . PHP_EOL;
-                return true;
-            } else {
-                echo "Akun anda tidak aktif." . PHP_EOL;
-                return false;
+    if (!empty($instructors)) {
+        foreach ($instructors as $instructor) {
+            if ($instructor["email"] == $email && password_verify($password, $instructor["password"])) {
+                if ($instructor['status'] == 'active') {
+                    echo "Anda login sebagai instruktur." . PHP_EOL;
+                    return $instructor;
+                } else {
+                    echo "Akun anda tidak aktif." . PHP_EOL;
+                    return false;
+                }
             }
         }
     }
